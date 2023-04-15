@@ -64,39 +64,111 @@ function get_device() {
 
     //Selección y asignación
     switch(selectAddDevice){
-        case "1":
-            url = "../images/smartphone.jpeg"
-            name = "SMARTPHONE"
-            device_info[0] = url;
-            device_info[1] = name;
-            break;
-        case "2":
-            url = "../images/laptop.jpeg"
-            name = "LAPTOP"
-            device_info[0] = url;
-            device_info[1] = name;
-            break;
-        case "3":
-            url = "../images/pcEscritorio.jpeg"
-            name = "COMPUTADORA DE ESCRITORIO"
-            device_info[0] = url;
-            device_info[1] = name;
-            break;
-        case "4":
-            url = "../images/tablet.jpeg"
-            name = "TABLET"
-            device_info[0] = url;
-            device_info[1] = name;
-            break;
-        case "5":
-            url = "../images/tv.jpeg"
-            name = "TELEVISOR"
-            device_info[0] = url;
-            device_info[1] = name;
+    case "1":
+        url = "../images/smartphone.jpeg"
+        name = "SMARTPHONE"
+        device_info[0] = url;
+        device_info[1] = name;
+        break;
+    case "2":
+        url = "../images/laptop.jpeg"
+        name = "LAPTOP"
+        device_info[0] = url;
+        device_info[1] = name;
+        break;
+    case "3":
+        url = "../images/pcEscritorio.jpeg"
+        name = "COMPUTADORA DE ESCRITORIO"
+        device_info[0] = url;
+        device_info[1] = name;
+        break;
+    case "4":
+        url = "../images/tablet.jpeg"
+        name = "TABLET"
+        device_info[0] = url;
+        device_info[1] = name;
+        break;
+    case "5":
+        url = "../images/tv.jpeg"
+        name = "TELEVISOR"
+        device_info[0] = url;
+        device_info[1] = name;
     }
-
     //Retorno
     return device_info;
+}
+
+//=======================================
+/**
+ * @description Genera el consumo de datos de forma aleatoria
+ * @param opt: toma el valor del atributo "value" en cada option del select para identificar 
+ *             la actividad y el consumo asociado a ella.
+ * @returns consumption
+ * El consumo de datos generado para mostrar al usuario.
+ * @implements se invoca en: "create_devide()".
+ */
+function generate_MB(opt){
+    //Variables valor máximo y mínimo.
+    let min;
+    let max;
+    //Variable del consumo
+    let consumption;
+    
+    //Selección
+    switch(opt){
+        case "1":
+            min = 1;
+            max = 3;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+            break;
+        case "2":
+            min = 1;
+            max = 2;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+            break;
+        case "3":
+            min = 3;
+            max = 6;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+            break;
+        case "4":
+            min = 6;
+            max = 9;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+            break;
+        case "5":
+            min = 10;
+            max = 15;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+        break;
+        case "6":
+            min = 5;
+            max = 8;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+        break;
+        case "7":
+            min = 9;
+            max = 14;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+        break;
+        case "8":
+            min = 7;
+            max = 11;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+        break;
+        case "9":
+            min = 5;
+            max = 8;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+        break;
+        case "10":
+            min = 10;
+            max = 15;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+        break;
+    }
+        
+    return consumption;
 }
 
 //=======================================
@@ -128,8 +200,16 @@ function create_device() {
     //Agregar boton de borrado al clon
     clone.querySelector("li").appendChild(delete_button);
     
-    //-----Actualizado dinámico-----
+    //-----Actualizado de actividad dinámico-----
+    //Referencia al select de actividades
+    const t = clone.querySelector("select");
+    //Referencia al input que mostrará el consumo de ancho de banda
+    const i = clone.querySelector("input");
     
+    t.addEventListener("change", (event) =>{
+        //Establecer o actuailizar consumo de datos
+        i.value = generate_MB(t.value)
+    });
 
     //-----Eliminado dinámico-----
     //Agregar evento al botón
