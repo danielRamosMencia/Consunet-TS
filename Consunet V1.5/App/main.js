@@ -27,19 +27,25 @@ function count_elements() {
  * @returns new_delete_button: Tag HTML del botón para eliminar el dispositivo agregado.
  * @implements se invoca en: "create_device()".
  */
-function create_delete_button() { 
-    //Tags creados
+function create_delete_button(action) { 
+    //Botón
     const new_delete_button = document.createElement("button");
-    const button_icon = document.createElement("i");
-
-    //Asignaciones de clases y estilos 
-    button_icon.classList.add("bi", "bi-trash3");
-    button_icon.textContent = " Eliminar";
-    new_delete_button.classList.add("btn", "btn-danger", "border", "border-dark", "mt-2");
     
-    //Unificar botón con icono
-    new_delete_button.appendChild(button_icon);
-
+    if(action == 0){
+        //Icono
+        const button_icon = document.createElement("i");
+        //Asignaciones de clases y estilos 
+        button_icon.classList.add("bi", "bi-trash3");
+        button_icon.textContent = " Eliminar";
+        new_delete_button.classList.add("btn", "btn-danger", "border", "border-dark", "mt-2");
+        
+        //Unificar botón con icono
+        new_delete_button.appendChild(button_icon);
+    }else {
+        new_delete_button.classList.add("btn", "btn-danger");
+        new_delete_button.textContent = "X";
+    }
+    
     //Retorno
     return new_delete_button;
 }
@@ -181,10 +187,33 @@ function generate_MB(opt){
  * Se hace un conteo de la cantidad de dispositivos conectados (fragmentos <li> en la lista <ul>).
  * @implements botón con id: "add".
  */
+//=======================================
+function create_activity(name_content, bandwidth_content) {
+    const new_li = document.createElement("li");
+    const new_p1 = document.createElement("p");
+    const new_in = document.createElement("input")
+    
+
+    new_li.classList.add("list-item", "d-flex", "align-items-center");
+    new_p1.classList.add("form-control", "mt-3");
+    // new_p1.setAttribute("name","p1");
+    new_in.classList.add("form-control");
+    new_in.setAttribute("type","number");
+    new_in.setAttribute("disabled","true");
+    // new_p2.setAttribute("name","p2");
+
+    new_p1.textContent = name_content;
+    new_li.appendChild(new_p1);
+    new_in.value = bandwidth_content;
+    new_li.appendChild(new_in);
+    console.log(new_in.value);
+
+    return new_li;
+}
 
 function create_device() {
     //Botón de borrado e información del dispositivo    
-    let delete_button = create_delete_button();
+    let delete_button = create_delete_button(0);
     let info_url_name = get_device();
 
     //Referencia al template y creación de fragmento HTML
@@ -200,17 +229,6 @@ function create_device() {
     //Agregar boton de borrado al clon
     clone.querySelector("li").appendChild(delete_button);
     
-    //-----Actualizado de actividad dinámico-----
-    //Referencia al select de actividades
-    const t = clone.querySelector("select");
-    //Referencia al input que mostrará el consumo de ancho de banda
-    const i = clone.querySelector("input");
-    
-    t.addEventListener("change", (event) =>{
-        //Establecer o actuailizar consumo de datos
-        i.value = generate_MB(t.value)
-    });
-
     //-----Eliminado dinámico-----
     //Agregar evento al botón
     delete_button.addEventListener("click", (event) =>{
@@ -244,6 +262,32 @@ function create_device() {
             }
         })
     })
+
+    //-----Agregado de actividades dinámico-----
+    const sel_options = clone.querySelector("select");
+    const i = clone.querySelectorAll("input");
+    const internal_ul = clone.querySelector("ul");
+    
+    sel_options.addEventListener("change", (event) =>{
+        let n = sel_options.selectedIndex;
+        let act_name = sel_options.options[n].text;
+        console.log(act_name);
+        let bandwidth = generate_MB(sel_options.value);
+        let activity = create_activity(act_name, bandwidth);
+        let erase_button = create_delete_button(1);
+        
+        activity.appendChild(erase_button);
+        activity.querySelector("p");
+        internal_ul.appendChild(activity);
+        //-----Eliminado dinámico-----
+        //console.log(erase_button.parentElement);
+        erase_button.addEventListener("click", (event) => {
+            const internal_item = erase_button.parentElement;
+            internal_ul.removeChild(internal_item);
+        })
+        last_node = i.length - 1;
+        // i[last_node].value = generate_MB(options.value);
+    });
 
     //El clon del template se le asigna al fragmeto
     fragment.appendChild(clone);
