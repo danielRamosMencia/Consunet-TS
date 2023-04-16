@@ -24,17 +24,21 @@ function count_elements() {
 //=======================================
 /**
  * @description Genera un nuevo elemento <button> e <i>, para asignar estilos a cada uno. 
+ * @params action: valor entero, valor 0 para indicar que se crea un botón de eliminado para
+ * un dispositivo nuevo, en otro caso, (valor 1) para que sea un botón de eliminado de 
+ * actividad.
  * @returns new_delete_button: Tag HTML del botón para eliminar el dispositivo agregado.
  * @implements se invoca en: "create_device()".
  */
 function create_delete_button(action) { 
-    //Botón
+    //Crear Botón
     const new_delete_button = document.createElement("button");
     
+    //Caso 0
     if(action == 0){
         //Icono
         const button_icon = document.createElement("i");
-        //Asignaciones de clases y estilos 
+        //Asignaciones de clases y estilos
         button_icon.classList.add("bi", "bi-trash3");
         button_icon.textContent = " Eliminar";
         new_delete_button.classList.add("btn", "btn-danger", "border", "border-dark", "mt-2");
@@ -42,6 +46,7 @@ function create_delete_button(action) {
         //Unificar botón con icono
         new_delete_button.appendChild(button_icon);
     }else {
+        //Asignaciones de clases y estilos
         new_delete_button.classList.add("btn", "btn-danger");
         new_delete_button.textContent = "X";
     }
@@ -55,8 +60,7 @@ function create_delete_button(action) {
  * @description Obtiene el nombre y la src de la imagen según el dispositivo seleccionado por el usuario.
  * Almacena los valores en las variables name y url respectivamente, para selecionarlos según el
  * valor del elemeto <select> en el formulario. Guarda dichos valores en un arreglo.
- * @returns device_info
- * Arreglo con la información del nombre y src de la imagen del dispositivo seleccionado.
+ * @returns device_info: Arreglo con la información del nombre y src de la imagen del dispositivo seleccionado.
  * @implements se invoca en: "create_device()".
  */
 function get_device() {
@@ -106,11 +110,10 @@ function get_device() {
 
 //=======================================
 /**
- * @description Genera el consumo de datos de forma aleatoria
- * @param opt: toma el valor del atributo "value" en cada option del select para identificar 
- *             la actividad y el consumo asociado a ella.
- * @returns consumption
- * El consumo de datos generado para mostrar al usuario.
+ * @description Genera el consumo de datos de forma aleatoria según la actividad. 
+ * @param opt: toma el valor del atributo "value" en cada option del select para 
+ * identificar la actividad y el consumo asociado a ella.
+ * @returns consumption: El consumo de datos generado para mostrar al usuario.
  * @implements se invoca en: "create_devide()".
  */
 function generate_MB(opt){
@@ -173,8 +176,41 @@ function generate_MB(opt){
             consumption = parseInt(Math.random() * (1 + max - min) + min);
         break;
     }
-        
+    
+    //Retorno
     return consumption;
+}
+
+//=======================================
+/**
+ * @description crea los tags HTML necesarios para anexar una actividad a la lista a modo
+ * de sub menú para cada dispositivo, y asigna los valores del nombre y el ancho de banda.
+ * @params name_content: Es el nombre de la actividad que hemos seleccionado.
+ * @params bandwidth_content: El consumo de datos generado para la actividad.
+ * @returns new_li: Tag HTML <li> con los datos y estructura necesaria para mostrar al usuario.
+ * @implements se implementa en: "create_device()".
+ */
+function create_activity(name_content, bandwidth_content) {
+    //Elementos creados
+    const new_li = document.createElement("li");
+    const new_p1 = document.createElement("p");
+    const new_in = document.createElement("input")
+    
+    //Asignación de clases, estilos y atributos
+    new_li.classList.add("list-item", "d-flex", "align-items-center");
+    new_p1.classList.add("form-control", "mt-3");
+    new_in.classList.add("form-control");
+    new_in.setAttribute("type","number");
+    new_in.setAttribute("disabled","true");
+
+    //Asignación de contenidos seleccionados
+    new_p1.textContent = name_content;
+    new_li.appendChild(new_p1);
+    new_in.value = bandwidth_content;
+    new_li.appendChild(new_in);
+
+    //Nueva actividad que se anexará al dispositivo
+    return new_li;
 }
 
 //=======================================
@@ -183,34 +219,12 @@ function generate_MB(opt){
  * Se referencia al template de <li> definido en main.html para crear un fragmento.
  * Se clona el template para manipularlo y se le asigna la información del dispositivo.
  * Con un eventListener se genera un eliminado dinámico a través del elemento padre del botón (li).
+ * Se implementa la funcionalidad de agregar varias actividades al dispositivo.
+ * A las actividades se les agrega la asignación y calculo de valores automàtico con un eventListner.
  * Al fragmento creado se lo enlaza el clon, y el fragmento se anexa en la lista de dispositivos.
  * Se hace un conteo de la cantidad de dispositivos conectados (fragmentos <li> en la lista <ul>).
  * @implements botón con id: "add".
  */
-//=======================================
-function create_activity(name_content, bandwidth_content) {
-    const new_li = document.createElement("li");
-    const new_p1 = document.createElement("p");
-    const new_in = document.createElement("input")
-    
-
-    new_li.classList.add("list-item", "d-flex", "align-items-center");
-    new_p1.classList.add("form-control", "mt-3");
-    // new_p1.setAttribute("name","p1");
-    new_in.classList.add("form-control");
-    new_in.setAttribute("type","number");
-    new_in.setAttribute("disabled","true");
-    // new_p2.setAttribute("name","p2");
-
-    new_p1.textContent = name_content;
-    new_li.appendChild(new_p1);
-    new_in.value = bandwidth_content;
-    new_li.appendChild(new_in);
-    console.log(new_in.value);
-
-    return new_li;
-}
-
 function create_device() {
     //Botón de borrado e información del dispositivo    
     let delete_button = create_delete_button(0);
@@ -264,28 +278,34 @@ function create_device() {
     })
 
     //-----Agregado de actividades dinámico-----
+    //Referencia al select del dispositivo
     const sel_options = clone.querySelector("select");
+    //Referencia a los inputs asociados al dispositivo
     const i = clone.querySelectorAll("input");
+    //Referencia a la lista ul dentro de cada dispositivo
     const internal_ul = clone.querySelector("ul");
     
     sel_options.addEventListener("change", (event) =>{
+        //Se obtiene el valor y el nombre de la actividad seleccionada
         let n = sel_options.selectedIndex;
         let act_name = sel_options.options[n].text;
-        console.log(act_name);
+        //---Se crea el consumo enviando los atributos de "value" y "text"---
+        //Consumo de ancho de banda
         let bandwidth = generate_MB(sel_options.value);
+        //Actividad
         let activity = create_activity(act_name, bandwidth);
+        //Botón de eliminado
         let erase_button = create_delete_button(1);
         
         activity.appendChild(erase_button);
         activity.querySelector("p");
         internal_ul.appendChild(activity);
         //-----Eliminado dinámico-----
-        //console.log(erase_button.parentElement);
         erase_button.addEventListener("click", (event) => {
             const internal_item = erase_button.parentElement;
             internal_ul.removeChild(internal_item);
         })
-        last_node = i.length - 1;
+        // last_node = i.length - 1;
         // i[last_node].value = generate_MB(options.value);
     });
 
