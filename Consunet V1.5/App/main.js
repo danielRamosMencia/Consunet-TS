@@ -14,6 +14,8 @@ const inputDispositivosConectados = document.getElementById("inputDispositivosCo
 const inputRendimiento = document.getElementById("inputRendimiento");
 //Referencia a la etiqueta con el valor del ancho de banda de la conexión.
 const inputAnchoDeBanda = document.getElementById("inputAnchoDeBanda");
+//Referencia al botón con el modal para agregar dispositivos
+const buttonAddModal = document.getElementById("AddButton");
 
 //=======================================
 /**
@@ -240,7 +242,7 @@ function create_device() {
     const template = document.getElementById("elementTemplate").content;
     const fragment = document.createDocumentFragment();
 
-    //------Creación y asignació dinámica-----
+    //------Creación y asignación dinámica-----
     //Clonar el template
     let clone = document.importNode(template, true);
     //Asignar atributos
@@ -252,7 +254,7 @@ function create_device() {
     //-----Eliminado dinámico-----
     //Agregar evento al botón
     delete_button.addEventListener("click", (event) =>{
-        //Referencia al elemnto padre del botón
+        //Referencia al elemento padre del botón
         const item = delete_button.parentElement;
         //Alerta de confirmación de eliminado
         Swal.fire({
@@ -273,8 +275,8 @@ function create_device() {
                 inputDispositivosConectados.value = devicesList.childElementCount;
                 //Calcular totales
                 all_clones = devicesList.querySelectorAll("input[type=text]");
+                console.log(all_clones.length);
                 inputRendimiento.value = calculate_consumptions(all_clones);
-                console.log(inputAnchoDeBanda.value / inputRendimiento.value);
                 //Alerta de éxito
                 Swal.fire({
                     title: "Dispositivo eliminado.",
@@ -318,7 +320,6 @@ function create_device() {
         i.value = calculate_consumptions(all_device_activies);
         //El total de totales
         inputRendimiento.value = calculate_consumptions(all_clones);
-        console.log(inputAnchoDeBanda.value / inputRendimiento.value);
 
         //-----Eliminado dinámico-----
         erase_button.addEventListener("click", (event) => {
@@ -328,7 +329,7 @@ function create_device() {
             i.value = calculate_consumptions(internal_ul.querySelectorAll("input[type=number]"));
             //Se vuelve a calcular el total de totales
             inputRendimiento.value = calculate_consumptions(all_clones);
-            console.log(inputAnchoDeBanda.value / inputRendimiento.value);
+            //console.log(inputAnchoDeBanda.value / inputRendimiento.value);
         })
         // last_node = i.length - 1;
         // i[last_node].value = generate_MB(options.value);
@@ -340,6 +341,7 @@ function create_device() {
     devicesList.appendChild(fragment);
     //Referencia a todos los inputs de consumo total
     all_clones = devicesList.querySelectorAll("input[type=text]");
+    console.log(all_clones.length);
     //Conteo de dispositivos
     inputDispositivosConectados.value = devicesList.childElementCount;
     
@@ -350,8 +352,11 @@ function create_device() {
  * @description Controla el actualizar la conexión escogida por el usuario. 
  * Hace referencia a los elementos del formulario que almacenan la información de la conexión actual.
  * Se controla la selección de una conexión al usuario, si se actualiza con la conexión por defecto
- * se lanza una alerta indicando que se debe seleccionar una conexión, caso contrario, se asigna un 
+ * Se lanza una alerta indicando que se debe seleccionar una conexión, caso contrario, se asigna un 
  * nuevo valor al atributo src que contiene la imagen de la conexión y se muestra un alerta de confimación.
+ * Control del ingreso de un ancho de banda por el usuario para comenzar a agregar dispositivos.
+ * Se lanza una alerta indicando que debe llenar este campo, caso contrario se actualiza y se habilita
+ * el botón de agregar dispositivos
  * @implements se invoca en botón con contenido: "Actualizar". 
  */
 function update_connection() {
@@ -360,14 +365,19 @@ function update_connection() {
     const connectionIMG = document.getElementById("connectionIMG");
 
     //Condiciones
-    if (inputTipoDeConexion == 0) {
-        //Alerta de información
+    if (inputTipoDeConexion == 0){
         Swal.fire({
             title: "¡Debe escoger una conexión!",
             icon: "info",
         })
+    }else if (inputAnchoDeBanda.value == ''){
+        Swal.fire({
+            title: "¡Debe ingresar un ancho de banda!",
+            icon: "info",
+        })
     }else {
-        //Selección y asignación
+        buttonAddModal.removeAttribute("disabled");
+        buttonAddModal.classList.replace("btn-info","btn-primary");
         switch(inputTipoDeConexion){
             case "1":
                 connectionIMG.setAttribute("src","../Images/inalambrico.jpeg");
@@ -392,6 +402,7 @@ function update_connection() {
     }
 }
 
+//=======================================
 /**
  * @description Calcula el total de consumo por dispositivo, sumando el valor de todas
  * las actividades asociadas al dispositivo.
@@ -401,12 +412,23 @@ function update_connection() {
  * @returns total: valor del consumo total del dispositivo.
  * @implements se implementa en "create_device()"
  */
-function calculate_consumptions(device_collection) {
+function calculate_consumptions(inputs_collection) {
+    //Almacenar la suma de cada valor
     let total = 0;
+    //Alias para el valor contenido dentro de cada elemento de la colección
+    let content;
 
-    device_collection.forEach(element => {
-        total = total + parseInt(element.value);
+    inputs_collection.forEach(element => {
+        //Válidar si algún input está vacío
+        if (element.value == ''){
+            content = 0;
+            total = total + content;
+        }else{
+            content = parseInt(element.value)
+            total = total + content;
+        } 
     });
-
+    
+    //Retorno
     return total;
 }

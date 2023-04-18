@@ -41,6 +41,13 @@
                                 </i>
                             </button>
                         </a>
+                        <a href="grahp.html" target="_blank">
+                            <button class="btn btn-dark btn-outline-light btn-lg mx-1 my-1">
+                                <i class="bi bi-bar-chart-fill">
+                                    Gráfica
+                                </i>
+                            </button>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -66,11 +73,11 @@
                     <option value="4">Satelital</option>
                 </select>
                 <label for="inputAnchoDeBanda" class="form-label">Ancho de banda:</label>
-                <input type="number" class="form-control border border-dark" id="inputAnchoDeBanda" min="1" required>
+                <input type="number" class="form-control border border-dark" id="inputAnchoDeBanda" min="1" size="5">
                 <label for="inputDispositivosConectados" class="form-label">Dipositivos conectados:</label>
                 <input type="number" class="form-control border border-dark" id="inputDispositivosConectados" disabled placeholder="0">
                 <label for="inputRendimiento" class="form-label">Rendimiento:</label>
-                <input type="text" class="form-control border border-dark" id="inputRendimiento" disabled>
+                <input type="text" class="form-control border border-dark" id="inputRendimiento" disabled placeholder="0">
                 <button type="button" id="buttonActualizar" class="btn btn-success border border-dark col mt-2" onclick="update_connection()">
                     <i class="bi bi-arrow-clockwise"> Actualizar</i>
                 </button>
@@ -81,7 +88,7 @@
         <div class="container d-flex flex-column border border-dark my-1 mx-1">
             <div class="container d-flex justify-content-center mt-1">
                 <h2>Dipositivos</h2>
-                <button type="button" class="btn btn-primary border border-dark border-2 ms-4 my-1" data-bs-toggle="modal" data-bs-target="#modalAgregarDispositivo">
+                <button id="AddButton" type="button" class="btn btn-info border border-dark border-2 ms-4 my-1" data-bs-toggle="modal" data-bs-target="#modalAgregarDispositivo" disabled>
                     <i class="bi bi-plus-square">  Agregar</i>
                 </button>
             </div>
@@ -176,6 +183,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!--==================== Javascript ====================-->
     <script src="../App/main.js"></script>
+    <script src="../App/Preventions.js"></script>
     <!-- <script src="../App/preventReCharge.js"></script> -->
 </body>
 </html>
