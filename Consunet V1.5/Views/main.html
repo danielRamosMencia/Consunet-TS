@@ -50,7 +50,7 @@
     <div class="mx-3 d-flex mt-4">
         <!--====================Connection menu ====================-->
         <div class="container border border-dark my-1 mx-1 w-50 d-flex flex-column">
-            <h2 class="text-center">Conexion</h2>
+            <h2 class="text-center">Conexión</h2>
             <div class="container d-flex justify-content-center align-items-center">
                 <div class="containerConnectionImage">
                     <img src="../Images/default.jpeg" class="img-fluid rounded" id="connectionIMG">
@@ -66,7 +66,7 @@
                     <option value="4">Satelital</option>
                 </select>
                 <label for="inputAnchoDeBanda" class="form-label">Ancho de banda:</label>
-                <input type="number" class="form-control border border-dark" id="inputAnchoDeBanda" min="1">
+                <input type="number" class="form-control border border-dark" id="inputAnchoDeBanda" min="1" required>
                 <label for="inputDispositivosConectados" class="form-label">Dipositivos conectados:</label>
                 <input type="number" class="form-control border border-dark" id="inputDispositivosConectados" disabled placeholder="0">
                 <label for="inputRendimiento" class="form-label">Rendimiento:</label>
@@ -162,7 +162,7 @@
                     <ul class="list-group">
                     </ul>
                     <label>Consumo Total MB/s</label>  
-                    <input type="number" disabled class="form-control" name="ab">
+                    <input type="text" disabled class="form-control" name="ab">
                 </div>
             </div>
             <button class="btn btn-primary border border-dark mt-2">

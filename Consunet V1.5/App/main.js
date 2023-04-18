@@ -4,10 +4,16 @@
  */
 //Variable contador para generar id autoincremental por dispositivo para cada elemento.
 let counter = 0;
+//Nos servirá para almacenar todos los nodos de los elementos html que contienen los totales de cada dispositovo
+let all_clones;
 //Referencia a la etiqueta <ul> que contiene los elementos de la lista de dispositivos.
 const devicesList = document.getElementById("devicesList")
 //Referencia a la etiqueta <input> en la cual muestra la cantidad de dispositivos en la lista.
 const inputDispositivosConectados = document.getElementById("inputDispositivosConectados");
+//Referencia a la etiqueta <input> que muestra el estado de la conexión.
+const inputRendimiento = document.getElementById("inputRendimiento");
+//Referencia a la etiqueta con el valor del ancho de banda de la conexión.
+const inputAnchoDeBanda = document.getElementById("inputAnchoDeBanda");
 
 //=======================================
 /**
@@ -116,7 +122,7 @@ function get_device() {
  * @returns consumption: El consumo de datos generado para mostrar al usuario.
  * @implements se invoca en: "create_devide()".
  */
-function generate_MB(opt){
+function generate_MB(opt) {
     //Variables valor máximo y mínimo.
     let min;
     let max;
@@ -242,7 +248,7 @@ function create_device() {
     clone.querySelector("h4").textContent = info_url_name[1];
     //Agregar boton de borrado al clon
     clone.querySelector("li").appendChild(delete_button);
-    
+
     //-----Eliminado dinámico-----
     //Agregar evento al botón
     delete_button.addEventListener("click", (event) =>{
@@ -265,6 +271,10 @@ function create_device() {
                 devicesList.removeChild(item);
                 //Conteo de elementos
                 inputDispositivosConectados.value = devicesList.childElementCount;
+                //Calcular totales
+                all_clones = devicesList.querySelectorAll("input[type=text]");
+                inputRendimiento.value = calculate_consumptions(all_clones);
+                console.log(inputAnchoDeBanda.value / inputRendimiento.value);
                 //Alerta de éxito
                 Swal.fire({
                     title: "Dispositivo eliminado.",
@@ -281,7 +291,7 @@ function create_device() {
     //Referencia al select del dispositivo
     const sel_options = clone.querySelector("select");
     //Referencia a los inputs asociados al dispositivo
-    const i = clone.querySelectorAll("input");
+    const i = clone.querySelector("input[type=text]");
     //Referencia a la lista ul dentro de cada dispositivo
     const internal_ul = clone.querySelector("ul");
     
@@ -297,13 +307,28 @@ function create_device() {
         //Botón de eliminado
         let erase_button = create_delete_button(1);
         
+        //Se le agrega el botón de eliminado a cada actividad
         activity.appendChild(erase_button);
-        activity.querySelector("p");
+        //Se agrega la actividad a la lista.
         internal_ul.appendChild(activity);
+
+        //------Cálculo dinámico de consumo-----
+        let all_device_activies = internal_ul.querySelectorAll("input[type=number]");
+        //Se asigna el total calculado al input
+        i.value = calculate_consumptions(all_device_activies);
+        //El total de totales
+        inputRendimiento.value = calculate_consumptions(all_clones);
+        console.log(inputAnchoDeBanda.value / inputRendimiento.value);
+
         //-----Eliminado dinámico-----
         erase_button.addEventListener("click", (event) => {
             const internal_item = erase_button.parentElement;
             internal_ul.removeChild(internal_item);
+            //Se vuelve a calcular el total
+            i.value = calculate_consumptions(internal_ul.querySelectorAll("input[type=number]"));
+            //Se vuelve a calcular el total de totales
+            inputRendimiento.value = calculate_consumptions(all_clones);
+            console.log(inputAnchoDeBanda.value / inputRendimiento.value);
         })
         // last_node = i.length - 1;
         // i[last_node].value = generate_MB(options.value);
@@ -313,8 +338,11 @@ function create_device() {
     fragment.appendChild(clone);
     //Se asigna el fragmento a la lista (se muestra en pantalla al usuario)
     devicesList.appendChild(fragment);
+    //Referencia a todos los inputs de consumo total
+    all_clones = devicesList.querySelectorAll("input[type=text]");
     //Conteo de dispositivos
     inputDispositivosConectados.value = devicesList.childElementCount;
+    
 }
 
 //=======================================
@@ -326,7 +354,7 @@ function create_device() {
  * nuevo valor al atributo src que contiene la imagen de la conexión y se muestra un alerta de confimación.
  * @implements se invoca en botón con contenido: "Actualizar". 
  */
-function update_connection(){
+function update_connection() {
     //Referencias
     const inputTipoDeConexion = document.getElementById("inputTipoDeConexion").value;
     const connectionIMG = document.getElementById("connectionIMG");
@@ -362,4 +390,23 @@ function update_connection(){
             icon: "success",
         })
     }
+}
+
+/**
+ * @description Calcula el total de consumo por dispositivo, sumando el valor de todas
+ * las actividades asociadas al dispositivo.
+ * @inner Calcula el total de todos los consumos totales de los dispositivos.
+ * @param device_collection: colección html con todos los elementos <input> donde se
+ * muestra el valor del consumo de la actividad para poder realizar la suma de estos
+ * @returns total: valor del consumo total del dispositivo.
+ * @implements se implementa en "create_device()"
+ */
+function calculate_consumptions(device_collection) {
+    let total = 0;
+
+    device_collection.forEach(element => {
+        total = total + parseInt(element.value);
+    });
+
+    return total;
 }
