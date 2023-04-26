@@ -1,82 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--====================Bootstrap Links ====================-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <!--====================Custom CSS Links ====================-->
+    <link rel="stylesheet" type="text/css" href="../Styles/landing.css">
+    <title>Consunet</title>
     <!--====================Icon ====================-->
     <link rel="icon" type="ico" href="../Images/iconoWifi.ico">
-    <!--====================Bootstrap Links ====================-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
-    <!--====================Custom CSS Links ====================-->
-    <link rel="stylesheet" type="text/css" href="../Styles/Templates.css">
-    <link rel="stylesheet" type="text/css" href="../Styles/CustomStyles.css">
-    <title>Consunet</title>
 </head>
-<body class="bg-body-secondary">
-    <!--====================Start NavBar ====================-->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container-fluid">
-            <h2 class="text-warning"><i class="bi bi-wifi me-2"></i>Consunet</h2>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#responsiveMenuNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<body>
+    <!-- partial:index.partial.html -->
+    <sectio class="nav">
 
-            <div class="collapse navbar-collapse" id="responsiveMenuNavbar">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a href="main.html">
-                            <button class="btn btn-dark btn-outline-success btn-lg mx-1 my-1">
-                                <i class="bi bi-router">
-                                    Comenzar
-                                </i>
-                            </button>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                            <button class="btn btn-dark btn-outline-danger btn-lg mx-1 my-1" id="buttonCloseWindow">
-                                <i class="bi bi-x-circle">
-                                    Salir
-                                </i>
-                            </button>
-                    </li>
-                </ul>
-            </div>
+        <h1 style=" margin-top: -370px; font-size: 68px; font-weight: bold; ">CONSUNET</h1>
+        <img src="../Images/gif.gif" class="imag" />
+        <h3 class="span loader">
+            <span class="m">S</span>
+            <span class="m">I</span>
+            <span class="m">M</span>
+            <span class="m">U</span>
+            <span class="m">L</span>
+            <span class="m">A</span>
+            <span class="m">D</span>
+            <span class="m">O</span>
+            <span class="m">R</span>
+            <span class="m">&nbsp;</span>
+            <span class="m">D</span><span class="m">E</span><span class="m">&nbsp;</span>
+            <span class="m">C</span>
+            <span class="m">O</span>
+            <span class="m">N</span>
+            <span class="m">S</span>
+            <span class="m">U</span>
+            <span class="m">M</span>
+            <span class="m">O</span><br><br>
+            <span class="m">D</span><span class="m">E</span><span class="m">&nbsp;</span>
+            <span class="m"></span>
+            <span class="m">I</span>
+            <span class="m">N</span>
+            <span class="m">T</span>
+            <span class="m">E</span>
+            <span class="m">R</span>
+            <span class="m">N</span>
+            <span class="m">E</span>
+            <span class="m">T</span>
+        </h3>
+        <div class="nav-container">
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#responsiveMenuNavbar" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="responsiveMenuNavbar">
+                        <ul class="navbar-nav ms-auto nav-buttons">
+                            <li class="nav-item">
+                                <h2 class="text-warning"><i class="bi bi-wifi me-2"></i>ConsuNet</h2>
+                            </li>
+                            <li class="nav-item">
+                                <a href="main.html">
+                                    <button class="btn btn-dark btn-outline-success btn-lg mx-1 my-1">
+                                        <i class="bi bi-router">
+                                            Comenzar
+                                        </i>
+                                    </button>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#sobre">
+                                    <button class="btn btn-dark btn-outline-success btn-lg mx-1 my-1">
+                                        Sobre
+                                    </button>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="help.html">
+                                    <button class="btn btn-dark btn-outline-success btn-lg mx-1 my-1">
+                                        Ayuda
+                                    </button>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#dev">
+                                    <button class="btn btn-dark btn-outline-success btn-lg mx-1 my-1">
+                                        Desarrolladores
+                                    </button>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-dark btn-outline-danger btn-lg mx-1 my-1" id="buttonCloseWindow">
+                                    <i class="bi bi-x-circle">
+                                        Salir
+                                    </i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </div>
-    </nav>
-    <!--====================End NavBar ====================-->
+    </sectio>
+    <main class="main">
 
-    <!--====================Start home menu ====================-->
-    <div class="container">
-        <div class="container-fluid d-flex flex-column justify-content-center">
-            <div class="container-fluid d-flex justify-content-center">
-                <h1>Bienvenido</h1>
+        <section class="slider" id="tab-esbuild">
+            <article class="blog-post">
+                <div class="blog-post__img">
+                    <img src="../Images/iconoWifi.ico" alt="" />
+                </div>
+                <div class="blog-post__info">
+                    <h2 class="blog-post__title" style=" font-size: 38px; font-weight: bold; ">Simulador ConsuNet</h2>
+                    <p style="text-align: justify; font-weight: bold">
+                        Me complace presentarte nuestro simulador de servicios de Internet. Con este simulador, podrás
+                        obtener una mejor
+                        comprensión de cómo funcionan los servicios de Internet y cómo puedes elegir la mejor opción
+                        para tus necesidades.
+                    </p>
+                    <a href="main.html" class="blog-post__cta">Usar Simulador</a>
+                </div>
+            </article>
+        </section>
+
+        <section class="slider" id="sobre">
+
+            <section class="containeri">
+                <div class="card">
+                    <div class="box">
+                        <div class="content">
+                            <h2>IS</h2>
+                            <h3 style=" font-size: 38px; font-weight: bold; ">ConsuNet</h3>
+                            <p style="text-align: justify; font-weight: bold">
+                                Nuestro simulador es una herramienta interactiva que te permite elegir diferentes
+                                características y configuraciones para
+                                tu servicio de Internet. Podrás elegir la velocidad de conexión, la cantidad de
+                                dispositivos conectados y las
+                                actividades que realizas en línea. Luego, podrás ver cómo estas características afectan
+                                el rendimiento de tu conexión a
+                                Internet.
+                                <br>
+                                <br>
+                                Es una herramienta valiosa para aquellos que desean contratar o implementar un servicio
+                                de Internet
+                                con una compañía (ISP, Internet Service Provider - Proveedor de servicios de Internet).
+                                También es útil para aquellos
+                                que desean conocer la experiencia de tener una conexión a Internet con ciertos
+                                parámetros y cómo se relacionan con los
+                                dispositivos conectados y las actividades realizadas.
+                            </p>
+                            <a href="#">Leer mas</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section class="slider" id="">
+            <h1 style=" font-size: 38px; font-weight: bold; ">Funcionalidades</h1>
+            <section class="containero">
+                <div class="serviceBox">
+                    <div class="icon" style="--i:#ffffff3d;">
+                        <i class="bi bi-code " style="font-size: 80px;"></i>
+                    </div>
+                    <div class="content">
+                        <h2>Asesoramiento</h2>
+                        <p style=" color:black">Ayudar a la población a una elección más acertada en la contratación de
+                            un servicio de internet según sus necesidades.</p>
+                    </div>
+                </div>
+
+                <div class="serviceBox">
+                    <div class="icon" style="--i:#ffffff3d;">
+                        <i class="bi bi-broadcast-pin" style="font-size: 90px;"></i>
+                    </div>
+                    <div class="content">
+                        <h2>Simulacion</h2>
+                        <p style=" color:black">Experimentar conexiones a internet fuera del alcance del usuario.</p>
+                    </div>
+                </div>
+                <div class="serviceBox">
+                    <div class="icon" style="--i:#ffffff3d;">
+                        <i class="bi bi-bar-chart" style="font-size: 80px;"></i>
+                    </div>
+                    <div class="content">
+                        <h2>Analisis</h2>
+                        <p style=" color:black">comprender las situaciones y actividades cotidianas que afectan la
+                            conexión a internet...</p>
+                    </div>
+                </div>
+
+            </section>
+        </section>
+        <div id="dev"></div>
+        <section class="slider" id="tab-vite">
+            <div class="slider__container container">
+                <img src="../Images/leftarrow.svg" class="slider__arrow" id="before">
+                <section class="slider__body slider__body--show" data-id="1">
+                    <div class="slider__texts">
+                        <h2 class="subtitle">Riccy Rivera </h2>
+                        <p class="slider__review">
+                            ¡Hola! Soy un estudiante de ingeniería en sistemas y estoy aquí para presentarles mi
+                            proyecto en la clase
+                            de teoría de la simulación. He creado un simulador de consumo de Internet que espero que les
+                            guste y les sea útil.
+                        </p>
+                    </div>
+                    <figure class="slider__picture">
+                        <img src="../Images/fibraOptica.jpeg" class="slider__img">
+                    </figure>
+                </section>
+
+                <section class="slider__body" data-id="2">
+                    <div class="slider__texts">
+                        <h2 class="subtitle">Daniel Ramos</h2>
+                        <p class="slider__review">
+                            En este proyecto he aplicado los conocimientos adquiridos en mi carrera y he puesto en
+                            práctica mis habilidades de
+                            programación. Espero que disfruten del simulador y que mi trabajo les resulte interesante.
+                        </p>
+                    </div>
+
+                    <figure class="slider__picture">
+                        <img src="../Images/laptop.jpeg" class="slider__img">
+                    </figure>
+                </section>
+
+                <section class="slider__body" data-id="3">
+                    <div class="slider__texts">
+                        <h2 class="subtitle">Edgardo Ramirez</h2>
+                        <p class="slider__review">
+                            Actualmente estoy estudiando ingeniería en sistemas. En mi tiempo libre, me apasiona
+                            desarrollar proyectos de software y
+                            últimamente he estado trabajando en un simulador de consumo de internet.
+                        </p>
+                    </div>
+
+                    <figure class="slider__picture">
+                        <img src="../Images/cableado.jpeg" class="slider__img">
+                    </figure>
+                </section>
+
+                <img src="../Images/rightarrow.svg" class="slider__arrow" id="next">
             </div>
-            <div class="container-fluid d-flex justify-content-center">
-                <a href="main.html" class="aling-items-center">
-                    <button class="button"><span>Comenzar</span></button>
-                </a>
-            </div>
-            <div class="container-fluid d-flex justify-content-center">
-                <a href="help.html" class="aling-items-center">
-                    <button class="button"><span>Ayuda</span></button>
-                </a>
-            </div>
-            <div class="container-fluid d-flex justify-content-center">
-                <a href="#" class="aling-items-center">
-                    <button class="button"><span>Sobre Consunet</span></button>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!--====================End home menu ====================-->
+        </section>
+        </section>
+    </main>
+    <canvas class="background">
+    </canvas><!-- SGVsbG8hIE15IG5hbWUgaXMgU2FyYSBNYXphbC4gV2VsY29tZSB0byBteSBDb2RlUGVuIQ== -->
+
+
+    <!-- partial -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script src="../App/script.js"></script>
     <!--==================== Bootstrap ====================-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <!--==================== SweetAlert2 ====================-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <!--==================== Javascript ====================-->
-    <script src="../App/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+
 </body>
+
 </html>
