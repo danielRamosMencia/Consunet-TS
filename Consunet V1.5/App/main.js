@@ -16,6 +16,10 @@ const inputRendimiento = document.getElementById("inputRendimiento");
 const inputAnchoDeBanda = document.getElementById("inputAnchoDeBanda");
 //Referencia al botón con el modal para agregar dispositivos
 const buttonAddModal = document.getElementById("AddButton");
+//Referencia al botón con el modal para crear nuevos dispositivos
+const createDevice = document.getElementById("createDevice");
+//Referencia al select del formulario de agregar dispositivos 
+const selectAddDevice = document.getElementById("selectAddDevice");
 
 //=======================================
 /**
@@ -109,6 +113,11 @@ function get_device() {
     case "5":
         url = "../images/tv.jpeg"
         name = "TELEVISOR"
+        device_info[0] = url;
+        device_info[1] = name;
+    case "6":
+        url = "../images/dispositivoUsuario.jpeg"
+        name = "DISPOSITIVO DE USUARIO"
         device_info[0] = url;
         device_info[1] = name;
     }
@@ -328,7 +337,8 @@ function create_device() {
             //Se vuelve a calcular el total
             i.value = calculate_consumptions(internal_ul.querySelectorAll("input[type=number]"));
             //Se vuelve a calcular el total de totales
-            inputRendimiento.value = calculate_consumptions(all_clones);
+            inputRendimiento.value = inputAnchoDeBanda.value / calculate_consumptions(all_clones);
+            console.log(inputRendimiento.value)
             //console.log(inputAnchoDeBanda.value / inputRendimiento.value);
         })
         // last_node = i.length - 1;
@@ -376,8 +386,11 @@ function update_connection() {
             icon: "info",
         })
     }else {
-        buttonAddModal.removeAttribute("disabled");
+        //Descomentar al final
+        //buttonAddModal.removeAttribute("disabled");
         buttonAddModal.classList.replace("btn-info","btn-primary");
+        //createDevice.removeAttribute("disabled");
+        createDevice.classList.replace("btn-info","btn-primary");
         switch(inputTipoDeConexion){
             case "1":
                 connectionIMG.setAttribute("src","../Images/inalambrico.jpeg");
@@ -431,4 +444,49 @@ function calculate_consumptions(inputs_collection) {
     
     //Retorno
     return total;
+}
+
+//=======================================
+/**
+ * @description Se usa para que el usuario pueda agregar sus propios dispositivos.
+ * Usa un template para mayor eficiencia.
+ * @implements se implementa en el botón con id: "createDevice"
+ */
+function new_device_by_user() {
+    //Referencia al input con el nombre ingresado por el usuario
+    const newDeviceName = document.getElementById("newDeviceName");
+
+    if (newDeviceName.value == ""){
+        Swal.fire({
+            title: "¡Debe ingresar un nombre!",
+            icon: "info",
+        })
+    }else{
+        //Obtener contenido del template (450), crear fragmento (451) y clonar template (452)
+    const template = document.getElementById("userDeviceTemplate").content;
+    const fragment = document.createDocumentFragment();
+    const clone = document.importNode(template, true);
+
+
+    //Agregar el valor ingresado por el usuario al contenido de la nueva opción el formulario
+    clone.querySelector("option").textContent = newDeviceName.value;
+
+    //Agregar clon al fragmento 
+    fragment.appendChild(clone);
+
+    //Agregar fragmento al select parar mostrarlo al usuario
+    selectAddDevice.appendChild(fragment);
+
+    //Limpiar el input despúes de enviarlo
+    newDeviceName.value = '';
+
+    //Alerta de confirmación
+    Swal.fire({
+        title: "¡Dispositivo creado con éxito!",
+        icon: "success",
+    })
+    }
+
+
+    
 }
