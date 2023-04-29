@@ -6,6 +6,8 @@
 let counter = 0;
 //Nos servirá para almacenar todos los nodos de los elementos html que contienen los totales de cada dispositovo
 let all_clones;
+//Nos servirá para generar el valor del rendimiento
+let tmp_test = 0;
 //Referencia a la etiqueta <ul> que contiene los elementos de la lista de dispositivos.
 const devicesList = document.getElementById("devicesList")
 //Referencia a la etiqueta <input> en la cual muestra la cantidad de dispositivos en la lista.
@@ -115,11 +117,13 @@ function get_device() {
         name = "TELEVISOR"
         device_info[0] = url;
         device_info[1] = name;
+        break;
     case "6":
         url = "../images/dispositivoUsuario.jpeg"
         name = "DISPOSITIVO DE USUARIO"
         device_info[0] = url;
         device_info[1] = name;
+        break;
     }
     //Retorno
     return device_info;
@@ -284,8 +288,10 @@ function create_device() {
                 inputDispositivosConectados.value = devicesList.childElementCount;
                 //Calcular totales
                 all_clones = devicesList.querySelectorAll("input[type=text]");
-                console.log(all_clones.length);
-                inputRendimiento.value = calculate_consumptions(all_clones);
+                //Asignar valor al input de rendimiento para mostrarlo al usuaior
+                tmp_test = (calculate_consumptions(all_clones) / parseInt(inputAnchoDeBanda.value)) * 100;
+                inputRendimiento.value = tmp_test.toFixed(2) +"%";
+                
                 //Alerta de éxito
                 Swal.fire({
                     title: "Dispositivo eliminado.",
@@ -328,8 +334,9 @@ function create_device() {
         //Se asigna el total calculado al input
         i.value = calculate_consumptions(all_device_activies);
         //El total de totales
-        inputRendimiento.value = calculate_consumptions(all_clones);
-
+        tmp_test = (calculate_consumptions(all_clones) / parseInt(inputAnchoDeBanda.value)) * 100;
+        inputRendimiento.value = tmp_test.toFixed(2) +"%";
+        
         //-----Eliminado dinámico-----
         erase_button.addEventListener("click", (event) => {
             const internal_item = erase_button.parentElement;
@@ -337,12 +344,9 @@ function create_device() {
             //Se vuelve a calcular el total
             i.value = calculate_consumptions(internal_ul.querySelectorAll("input[type=number]"));
             //Se vuelve a calcular el total de totales
-            inputRendimiento.value = inputAnchoDeBanda.value / calculate_consumptions(all_clones);
-            console.log(inputRendimiento.value)
-            //console.log(inputAnchoDeBanda.value / inputRendimiento.value);
+            tmp_test = (calculate_consumptions(all_clones) / parseInt(inputAnchoDeBanda.value)) * 100;
+            inputRendimiento.value = tmp_test.toFixed(2) +"%";
         })
-        // last_node = i.length - 1;
-        // i[last_node].value = generate_MB(options.value);
     });
 
     //El clon del template se le asigna al fragmeto
@@ -351,7 +355,6 @@ function create_device() {
     devicesList.appendChild(fragment);
     //Referencia a todos los inputs de consumo total
     all_clones = devicesList.querySelectorAll("input[type=text]");
-    console.log(all_clones.length);
     //Conteo de dispositivos
     inputDispositivosConectados.value = devicesList.childElementCount;
     
@@ -387,9 +390,9 @@ function update_connection() {
         })
     }else {
         //Descomentar al final
-        //buttonAddModal.removeAttribute("disabled");
+        buttonAddModal.removeAttribute("disabled");
         buttonAddModal.classList.replace("btn-info","btn-primary");
-        //createDevice.removeAttribute("disabled");
+        createDevice.removeAttribute("disabled");
         createDevice.classList.replace("btn-info","btn-primary");
         switch(inputTipoDeConexion){
             case "1":
@@ -462,31 +465,94 @@ function new_device_by_user() {
             icon: "info",
         })
     }else{
-        //Obtener contenido del template (450), crear fragmento (451) y clonar template (452)
+    //Obtener contenido del template (450), crear fragmento (451) y clonar template (452)
     const template = document.getElementById("userDeviceTemplate").content;
     const fragment = document.createDocumentFragment();
     const clone = document.importNode(template, true);
 
-
     //Agregar el valor ingresado por el usuario al contenido de la nueva opción el formulario
     clone.querySelector("option").textContent = newDeviceName.value;
-
     //Agregar clon al fragmento 
     fragment.appendChild(clone);
-
     //Agregar fragmento al select parar mostrarlo al usuario
     selectAddDevice.appendChild(fragment);
-
     //Limpiar el input despúes de enviarlo
     newDeviceName.value = '';
-
     //Alerta de confirmación
     Swal.fire({
         title: "¡Dispositivo creado con éxito!",
         icon: "success",
     })
-    }
-
-
-    
+    }    
 }
+
+//=======================================
+const graphButton = document.getElementById("graphButton");
+graphButton.addEventListener("click", (event) => {
+    generate_grahp();
+})
+
+//=======================================
+const closeAndDelete = document.getElementById("closeAndDelete");
+closeAndDelete.addEventListener("click", (event)=>{
+    console.log(devicesList.childElementCount)
+    const graphContainer = document.getElementById("graphContainer");
+    if(devicesList.childElementCount /= 0){
+        //quitar canvas
+        const tmp_ctx = document.getElementById('myChart');
+        graphContainer.removeChild(tmp_ctx);
+        
+        //recrear
+        const canvaGraphTemplate = document.getElementById("canvaGraphTemplate").content;
+        const fragmet = document.createDocumentFragment();
+        const clone = document.importNode(canvaGraphTemplate, true);
+        fragmet.appendChild(clone);
+        graphContainer.appendChild(fragmet); 
+    }
+    
+})
+
+//=======================================
+function generate_grahp(){
+    let data_array = []
+    let name_array = []
+
+    let totals = devicesList.querySelectorAll("input[type=text]");
+    let titles = devicesList.querySelectorAll("h4");
+
+    if(totals.length /= 0){
+        for (let i = 0; i < totals.length; i++) {
+            data_array[i] = (totals[i].value);
+            name_array[i] = (titles[i].textContent);
+        }
+        const ctx = document.getElementById('myChart');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                labels: name_array,
+                datasets: [{
+                    label: 'Consumo máximo de dispositivos',
+                    data: data_array,
+                    backgroundColor:[
+                        'red',
+                        'blue',
+                        'green',
+                        'gray',
+                        'yellow'
+                    ],
+                    borderWidth: 1,
+                    borderColor: 'black'
+                }]
+                },
+                options: {
+                scales: {
+                    y: {
+                    beginAtZero: true
+                    }
+                }
+                }
+            });
+        }    
+}
+
