@@ -8,12 +8,18 @@ let counter = 0;
 let all_clones;
 //Nos servirá para generar el valor del rendimiento
 let tmp_test = 0;
+//Nos servirá para almacenar y mostrar el valor del consumo total 
+let tmp_total = 0;
+//Nos servirá para verificar el porcentaje de uso
+let range = 0;
 //Referencia a la etiqueta <ul> que contiene los elementos de la lista de dispositivos.
 const devicesList = document.getElementById("devicesList")
 //Referencia a la etiqueta <input> en la cual muestra la cantidad de dispositivos en la lista.
 const inputDispositivosConectados = document.getElementById("inputDispositivosConectados");
 //Referencia a la etiqueta <input> que muestra el estado de la conexión.
 const inputRendimiento = document.getElementById("inputRendimiento");
+//Referencia a la etiqueta <input> que muestra el consumo total
+const inputTotal = document.getElementById("inputTotal");
 //Referencia a la etiqueta con el valor del ancho de banda de la conexión.
 const inputAnchoDeBanda = document.getElementById("inputAnchoDeBanda");
 //Referencia al botón con el modal para agregar dispositivos
@@ -264,6 +270,72 @@ function create_device() {
     //Agregar boton de borrado al clon
     clone.querySelector("li").appendChild(delete_button);
 
+    //Conectado dinámico
+    const connectButton = clone.querySelector("input[type=checkbox]");
+    const labelConnectButton = clone.querySelector(".form-label-checkbox");
+    let selectOutput = clone.querySelector(".form-select");
+    let totalOutput = clone.querySelector(".text-start");
+    
+    console.log(labelConnectButton);
+    connectButton.addEventListener("click", (event) => {
+        if(connectButton.value == 1){
+            connectButton.value = 0;
+            labelConnectButton.textContent = "Desconectar";
+            console.log("DESCONENTADO");
+            selectOutput.removeAttribute("disabled");
+            let all_device_activies = internal_ul.querySelectorAll("input[type=number]")
+            let k = calculate_consumptions(all_device_activies)
+            totalOutput.value = k;
+            let all_clones = devicesList.querySelectorAll("input[type=text]")
+            tmp_total = calculate_consumptions(all_clones);
+            inputTotal.value = tmp_total
+            tmp_test = (tmp_total / parseInt(inputAnchoDeBanda.value)) * 100;
+            inputRendimiento.value = tmp_test.toFixed(2) +"%";
+            range = Math.round(tmp_test)
+            //Modificar el color del rendimiento
+            if (range <= 60){
+                inputRendimiento.classList.remove("border-dark", "border-warning", "border-danger");
+                inputRendimiento.classList.add("border-success");
+                inputRendimiento.classList.add("border-2");
+            }else if(range <= 90){
+                inputRendimiento.classList.remove("border-dark", "border-success", "border-danger");
+                inputRendimiento.classList.add("border-warning");
+                inputRendimiento.classList.add("border-2");
+            }else if(range >= 91){
+                inputRendimiento.classList.remove("border-dark", "border-success", "border-warning");
+                inputRendimiento.classList.add("border-danger");
+                inputRendimiento.classList.add("border-2");
+            }
+            
+        }else{
+            connectButton.value = 1;
+            labelConnectButton.textContent = "Conectar";
+            console.log("CONECTADO");
+            selectOutput.setAttribute("disabled","disabled");
+            totalOutput.value = 0;
+            let all_clones = devicesList.querySelectorAll("input[type=text]")
+            tmp_total = calculate_consumptions(all_clones);
+            inputTotal.value = tmp_total
+            tmp_test = (tmp_total / parseInt(inputAnchoDeBanda.value)) * 100;
+            inputRendimiento.value = tmp_test.toFixed(2) +"%";
+            range = Math.round(tmp_test)
+            //Modificar el color del rendimiento
+            if (range <= 60){
+                inputRendimiento.classList.remove("border-dark", "border-warning", "border-danger");
+                inputRendimiento.classList.add("border-success");
+                inputRendimiento.classList.add("border-2");
+            }else if(range <= 90){
+                inputRendimiento.classList.remove("border-dark", "border-success", "border-danger");
+                inputRendimiento.classList.add("border-warning");
+                inputRendimiento.classList.add("border-2");
+            }else if(range >= 91){
+                inputRendimiento.classList.remove("border-dark", "border-success", "border-warning");
+                inputRendimiento.classList.add("border-danger");
+                inputRendimiento.classList.add("border-2");
+            }
+        }
+    });
+
     //-----Eliminado dinámico-----
     //Agregar evento al botón
     delete_button.addEventListener("click", (event) =>{
@@ -288,10 +360,26 @@ function create_device() {
                 inputDispositivosConectados.value = devicesList.childElementCount;
                 //Calcular totales
                 all_clones = devicesList.querySelectorAll("input[type=text]");
-                //Asignar valor al input de rendimiento para mostrarlo al usuaior
-                tmp_test = (calculate_consumptions(all_clones) / parseInt(inputAnchoDeBanda.value)) * 100;
+                //Asignar valor al input de rendimiento y de consumo total para mostrarlo al usuaior
+                tmp_total = calculate_consumptions(all_clones);
+                inputTotal.value = tmp_total
+                tmp_test = (tmp_total / parseInt(inputAnchoDeBanda.value)) * 100;
                 inputRendimiento.value = tmp_test.toFixed(2) +"%";
-                
+                range = Math.round(tmp_test);
+                //Modificar el color del rendimiento
+                if (range <= 60){
+                    inputRendimiento.classList.remove("border-dark", "border-warning", "border-danger");
+                    inputRendimiento.classList.add("border-success");
+                    inputRendimiento.classList.add("border-2");
+                }else if(range <= 90){
+                    inputRendimiento.classList.remove("border-dark", "border-success", "border-danger");
+                    inputRendimiento.classList.add("border-warning");
+                    inputRendimiento.classList.add("border-2");
+                }else if(range >= 91){
+                    inputRendimiento.classList.remove("border-dark", "border-success", "border-warning");
+                    inputRendimiento.classList.add("border-danger");
+                    inputRendimiento.classList.add("border-2");
+                }
                 //Alerta de éxito
                 Swal.fire({
                     title: "Dispositivo eliminado.",
@@ -334,8 +422,24 @@ function create_device() {
         //Se asigna el total calculado al input
         i.value = calculate_consumptions(all_device_activies);
         //El total de totales
-        tmp_test = (calculate_consumptions(all_clones) / parseInt(inputAnchoDeBanda.value)) * 100;
+        tmp_total = calculate_consumptions(all_clones);
+        inputTotal.value = tmp_total
+        tmp_test = (tmp_total / parseInt(inputAnchoDeBanda.value)) * 100;
         inputRendimiento.value = tmp_test.toFixed(2) +"%";
+        range = Math.round(tmp_test)
+        if (range <= 60){
+            inputRendimiento.classList.remove("border-dark", "border-warning", "border-danger");
+            inputRendimiento.classList.add("border-success");
+            inputRendimiento.classList.add("border-2");
+        }else if(range <= 90){
+            inputRendimiento.classList.remove("border-dark", "border-success", "border-danger");
+            inputRendimiento.classList.add("border-warning");
+            inputRendimiento.classList.add("border-2");
+        }else if(range >= 91){
+            inputRendimiento.classList.remove("border-dark", "border-success", "border-warning");
+            inputRendimiento.classList.add("border-danger");
+            inputRendimiento.classList.add("border-2");
+        }
         
         //-----Eliminado dinámico-----
         erase_button.addEventListener("click", (event) => {
@@ -344,8 +448,25 @@ function create_device() {
             //Se vuelve a calcular el total
             i.value = calculate_consumptions(internal_ul.querySelectorAll("input[type=number]"));
             //Se vuelve a calcular el total de totales
-            tmp_test = (calculate_consumptions(all_clones) / parseInt(inputAnchoDeBanda.value)) * 100;
+            tmp_total = calculate_consumptions(all_clones);
+            inputTotal.value = tmp_total;
+            tmp_test = (tmp_total / parseInt(inputAnchoDeBanda.value)) * 100;
             inputRendimiento.value = tmp_test.toFixed(2) +"%";
+            range = Math.round(tmp_test)
+            
+            if (range <= 60){
+                inputRendimiento.classList.remove("border-dark", "border-warning", "border-danger");
+                inputRendimiento.classList.add("border-success");
+                inputRendimiento.classList.add("border-2");
+            }else if(range <= 90){
+                inputRendimiento.classList.remove("border-dark", "border-success", "border-danger");
+                inputRendimiento.classList.add("border-warning");
+                inputRendimiento.classList.add("border-2");
+            }else if(range >= 91){
+                inputRendimiento.classList.remove("border-dark", "border-success", "border-warning");
+                inputRendimiento.classList.add("border-danger");
+                inputRendimiento.classList.add("border-2");
+            }
         })
     });
 
@@ -377,6 +498,8 @@ function update_connection() {
     const inputTipoDeConexion = document.getElementById("inputTipoDeConexion").value;
     const connectionIMG = document.getElementById("connectionIMG");
 
+    let x, y, z;
+
     //Condiciones
     if (inputTipoDeConexion == 0){
         Swal.fire({
@@ -386,6 +509,11 @@ function update_connection() {
     }else if (inputAnchoDeBanda.value == ''){
         Swal.fire({
             title: "¡Debe ingresar un ancho de banda!",
+            icon: "info",
+        })
+    }else if(inputAnchoDeBanda.value < 1){
+        Swal.fire({
+            title: "¡Debe ingresar un ancho de banda mayor a 0!",
             icon: "info",
         })
     }else {
@@ -406,9 +534,31 @@ function update_connection() {
                 break;
             case "4":
                 connectionIMG.setAttribute("src","../Images/satelital.jpeg");
-                break;
+                break;    
         }
-        
+
+        //Actualizar valor de rendimiento en caso de modificar la conexión
+        if (devicesList.childElementCount != 0){
+            x = devicesList.querySelectorAll("input[type=text]");
+            y = calculate_consumptions(x);
+            inputTotal.value = y;
+            z = (y / parseInt(inputAnchoDeBanda.value)) * 100;
+            inputRendimiento.value = z.toFixed(2) + "%";
+            range = Math.round(z);
+            if (range <= 60){
+                inputRendimiento.classList.remove("border-dark", "border-warning", "border-danger");
+                inputRendimiento.classList.add("border-success");
+                inputRendimiento.classList.add("border-2");
+            }else if(range <= 90){
+                inputRendimiento.classList.remove("border-dark", "border-success", "border-danger");
+                inputRendimiento.classList.add("border-warning");
+                inputRendimiento.classList.add("border-2");
+            }else if(range >= 91){
+                inputRendimiento.classList.remove("border-dark", "border-success", "border-warning");
+                inputRendimiento.classList.add("border-danger");
+                inputRendimiento.classList.add("border-2");
+            }
+        }
         //Alerta de confimación
         Swal.fire({
             title: "¡Conexión actualizada!",
@@ -487,59 +637,86 @@ function new_device_by_user() {
 }
 
 //=======================================
+/**
+ * @event click 
+ * @description Invoca la función para generar el gráfico y mostrarlo en una ventana modal.
+ */
 const graphButton = document.getElementById("graphButton");
 graphButton.addEventListener("click", (event) => {
-    generate_grahp();
+    //Invocar función
+    generate_graph();
 })
 
 //=======================================
+/**
+ * @event click
+ * @description 
+ */
 const closeAndDelete = document.getElementById("closeAndDelete");
 closeAndDelete.addEventListener("click", (event)=>{
-    console.log(devicesList.childElementCount)
+    //Referencia al contenedor del gráfico.
     const graphContainer = document.getElementById("graphContainer");
-    if(devicesList.childElementCount /= 0){
-        //quitar canvas
+
+    //Verifica que no este vacío, es decir, tiene que haber dispositivos en la lista
+    if(devicesList.childElementCount != 0){
+        //Eliminar etiqueta canvas la cual se usa para el gráfico
         const tmp_ctx = document.getElementById('myChart');
         graphContainer.removeChild(tmp_ctx);
         
-        //recrear
+        //Recrear la etiqueta canvas a través de un template para crear un gráfico nuevo
         const canvaGraphTemplate = document.getElementById("canvaGraphTemplate").content;
         const fragmet = document.createDocumentFragment();
         const clone = document.importNode(canvaGraphTemplate, true);
         fragmet.appendChild(clone);
         graphContainer.appendChild(fragmet); 
     }
-    
 })
 
 //=======================================
-function generate_grahp(){
+/**
+ * @description Obtiene los datos de la lista de dispositivos, el consumo total y el nombre
+ * de cada uno de los dispositivos.
+ * Crea los datos que irán en la gráfica.
+ * Genera el gráfico con los datos recolectados.
+ * @implements se implementa en el evento del botón con id: graphButton
+ */
+function generate_graph(){
+    //Arreglos los cuales contendrán la información para generar la gráfica.
     let data_array = []
     let name_array = []
 
+    //Se obtienen los campos de Consumo total del dispositivo
     let totals = devicesList.querySelectorAll("input[type=text]");
+    //Se optienen los nombres de los dispositivos
     let titles = devicesList.querySelectorAll("h4");
 
-    if(totals.length /= 0){
+    //Verifica que no este vacío, es decir, tiene que haber dispositivos en la lista
+    if(totals.length != 0){
+        //Se llenan los valores con ambas nodeLists
         for (let i = 0; i < totals.length; i++) {
             data_array[i] = (totals[i].value);
             name_array[i] = (titles[i].textContent);
         }
+
+        //---------Procedimiento de creación de la gráfica---------
+        //Referenciar el elemento canvas
         const ctx = document.getElementById('myChart');
 
+            //Crear gráfica
             new Chart(ctx, {
                 type: 'line',
                 data: {
                 labels: name_array,
                 datasets: [{
-                    label: 'Consumo máximo de dispositivos',
+                    label: 'Consumo máximo de dispositivos (Mbps)',
                     data: data_array,
                     backgroundColor:[
-                        'red',
-                        'blue',
-                        'green',
-                        'gray',
-                        'yellow'
+                        '#FC9E91',
+                        '#9193FC',
+                        '#AAFC91',
+                        '#DA91FC',
+                        '#FCFA91',
+                        '#FC91BE'
                     ],
                     borderWidth: 1,
                     borderColor: 'black'

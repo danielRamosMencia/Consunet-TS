@@ -49,6 +49,13 @@
                             <i class="bi bi-bar-chart-line"> Gráfica</i>
                         </button>
                     </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <button class="btn btn-dark btn-outline-primary btn-lg mx-1 my-1">
+                                <i class="bi bi-arrow-up"></i>
+                            </button>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -74,13 +81,18 @@
                 </select>
                 <label for="inputAnchoDeBanda" class="form-label">Ancho de banda (Mbps):</label>
                 <input type="number" class="form-control border border-dark" id="inputAnchoDeBanda" min="1" size="5">
+                <div class="d-flex align-items-center ">
+                    <button type="button" id="buttonActualizar" class="btn btn-success border border-dark col mt-2" onclick="update_connection()">
+                        <i class="bi bi-arrow-clockwise"> Actualizar</i>
+                    </button><br>
+                </div>
+
                 <label for="inputDispositivosConectados" class="form-label">Dispositivos conectados:</label>
                 <input type="number" class="form-control border border-dark" id="inputDispositivosConectados" disabled placeholder="0">
                 <label for="inputRendimiento" class="form-label">Rendimiento (% de uso):</label>
-                <input type="text" class="form-control border border-dark" id="inputRendimiento" disabled placeholder="0%">
-                <button type="button" id="buttonActualizar" class="btn btn-success border border-dark col mt-2" onclick="update_connection()">
-                    <i class="bi bi-arrow-clockwise"> Actualizar</i>
-                </button>
+                <input type="text" class="form-control border border-dark" id="inputRendimiento" disabled placeholder="0">
+                <label for="inputTotal" class="form-label">Consumo total (Mbps):</label>
+                <input class="form-control border border-dark" id="inputTotal" disabled placeholder="0">
             </form>
         </div>
         <!--====================End connection menu ====================-->
@@ -98,6 +110,7 @@
             <div class="container">
                 <ul class="list-group my-1" id="devicesList">
                 </ul>
+                
             </div>
         </div>
         <!--====================End devices list====================-->
@@ -192,7 +205,7 @@
                 <div class="col-lg">
                     <h4 class="text-center"></h4>      
                     <label for="selectChangeActivity">Actividad</label>
-                    <select class="form-select">
+                    <select class="form-select" disabled>
                         <option value="0" selected="true" disabled="disabled">Seleccione una actividad</option>
                         <option value="1">Navegación web</option>
                         <option value="2">Música</option>
@@ -216,12 +229,13 @@
                     <ul class="list-group">
                     </ul>
                     <label>Consumo Total MB/s</label>  
-                    <input type="text" disabled class="form-control" name="ab">
+                    <input type="text" disabled class="form-control text-start" name="ab" value="0">
                 </div>
             </div>
-            <button class="btn btn-primary border border-dark mt-2">
-                <i class="bi bi-toggle2-on"> Conectar</i>
-            </button>
+            <div class="form-check form-switch">
+                <label class="form-label-checkbox">Conectar</label>
+                <input type="checkbox" class="form-check-input" value="1">
+            </div>
         </li>
     </template>
 
@@ -235,14 +249,14 @@
             <canvas id="myChart"></canvas>
         </template>
 
+    <!--==================== Javascript ====================-->
+    <script src="../App/main.js"></script>
+    <script src="../App/Preventions.js"></script>
     <!--==================== Bootstrap ====================-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
     <!--==================== SweetAlert2 ====================-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!--==================== ChartJS ====================-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!--==================== Javascript ====================-->
-    <script src="../App/main.js"></script>
-    <script src="../App/Preventions.js"></script>
 </body>
 </html>
