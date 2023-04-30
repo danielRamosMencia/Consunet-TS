@@ -11,3 +11,4 @@ No. Actividad - Consumo (MB/s)
 8. Vídeo conferencia HD - 7 a 11
 9. Descargas de archivos pequeños - 5 a 8 
 10. Descargas de archivos grandes - 10 a 15
+11. Jugar Online - 5 a 10

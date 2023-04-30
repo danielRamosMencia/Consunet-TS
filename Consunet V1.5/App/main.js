@@ -202,6 +202,11 @@ function generate_MB(opt) {
             max = 15;
             consumption = parseInt(Math.random() * (1 + max - min) + min);
         break;
+        case "11":
+            min = 5;
+            max = 10;
+            consumption = parseInt(Math.random() * (1 + max - min) + min);
+        break;
     }
     
     //Retorno
@@ -281,8 +286,9 @@ function create_device() {
         if(connectButton.value == 1){
             connectButton.value = 0;
             labelConnectButton.textContent = "Desconectar";
-            console.log("DESCONENTADO");
             selectOutput.removeAttribute("disabled");
+            counter = counter + 1
+            inputDispositivosConectados.value = counter;
             let all_device_activies = internal_ul.querySelectorAll("input[type=number]")
             let k = calculate_consumptions(all_device_activies)
             totalOutput.value = k;
@@ -309,8 +315,9 @@ function create_device() {
             
         }else{
             connectButton.value = 1;
+            counter = counter - 1; 
+            inputDispositivosConectados.value = counter;
             labelConnectButton.textContent = "Conectar";
-            console.log("CONECTADO");
             selectOutput.setAttribute("disabled","disabled");
             totalOutput.value = 0;
             let all_clones = devicesList.querySelectorAll("input[type=text]")
@@ -477,7 +484,7 @@ function create_device() {
     //Referencia a todos los inputs de consumo total
     all_clones = devicesList.querySelectorAll("input[type=text]");
     //Conteo de dispositivos
-    inputDispositivosConectados.value = devicesList.childElementCount;
+    //inputDispositivosConectados.value = devicesList.childElementCount;
     
 }
 
@@ -682,8 +689,8 @@ closeAndDelete.addEventListener("click", (event)=>{
  */
 function generate_graph(){
     //Arreglos los cuales contendrán la información para generar la gráfica.
-    let data_array = []
-    let name_array = []
+    let data_array = [0]
+    let name_array = ["INICIO"]
 
     //Se obtienen los campos de Consumo total del dispositivo
     let totals = devicesList.querySelectorAll("input[type=text]");
@@ -694,8 +701,8 @@ function generate_graph(){
     if(totals.length != 0){
         //Se llenan los valores con ambas nodeLists
         for (let i = 0; i < totals.length; i++) {
-            data_array[i] = (totals[i].value);
-            name_array[i] = (titles[i].textContent);
+            data_array[i+1] = (totals[i].value);
+            name_array[i+1] = (titles[i].textContent);
         }
 
         //---------Procedimiento de creación de la gráfica---------
